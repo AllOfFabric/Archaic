@@ -1,0 +1,100 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'fabric-loom' version '0.2.6-SNAPSHOT'
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+archivesBaseName = project.archive_name
+version = project.mod_version
+group = project.maven_group
+
+def ENV = System.getenv()
+version = version + "+" + (ENV.BUILD_NUMBER ? ("build." + ENV.BUILD_NUMBER) : "custom") + "-1.15"
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+    maven {
+        name = "TehNut"
+        url = "https://tehnut.info/maven"
+    }
+    maven {
+        name = "JitPack"
+        url = "https://jitpack.io"
+    }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    compileOnly "com.google.code.findbugs:jsr305:3.0.2" //needed to get nullability checks for MC source, otherwise using jetbrains annotations
+    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+    compileOnly "org.jetbrains:annotations:18.0.0"
+
+
+    modImplementation("me.shedaniel.cloth:config-2:${project.clothconfig_version}") {
+        exclude(group: "io.github.prospector", module: "modmenu")
+    }
+    //include("me.shedaniel.cloth:config-2:${project.clothconfig_version}") {
+    //    exclude(group: "io.github.prospector", module: "modmenu")
+    //}
+
+    //only for testing
+    modRuntime "io.github.prospector:modmenu:${project.modmenu_version}"
+    modRuntime("me.shedaniel:RoughlyEnoughItems:${project.rei_version}") {
+        exclude(group: "me.shedaniel.cloth", module: "config-2")
+    }
+    modRuntime("mcp.mobius.waila:Hwyla:${project.hwyla_version}") {
+        transitive = false
+    }
+    modRuntime("TechReborn:TechReborn-1.15:${project.techreborn_version}") {
+        exclude(group: "net.fabricmc")
+        exclude(group: "net.fabricmc.fabric-api")
+    }
+}
+
+processResources {
+    inputs.property "version", project.version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include "fabric.mod.json"
+        expand "version": project.version
+    }
+
+    from(sourceSets.main.resources.srcDirs) {
+        exclude "fabric.mod.json"
+    }
+}
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = "sources"
+    from sourceSets.main.allSource
+}
+
+jar {
+    from "LICENSE.md"
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact(remapJar)
+            artifact(sourcesJar) {
+                builtBy remapSourcesJar
+            }
+        }
+    }
+
+    repositories {
+
+    }
+}

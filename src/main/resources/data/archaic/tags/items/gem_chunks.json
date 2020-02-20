@@ -1,0 +1,8 @@
+{
+    "replace": false,
+    "values": [
+        "archaic:redstone_chunk",
+        "archaic:diamond_chunk",
+        "archaic:emerald_chunk"
+    ]
+}

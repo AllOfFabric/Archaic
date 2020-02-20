@@ -1,0 +1,8 @@
+{
+    "replace": false,
+    "values": [
+        "archaic:coal_chunk",
+        "archaic:iron_chunk",
+        "archaic:gold_chunk"
+    ]
+}

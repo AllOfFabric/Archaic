@@ -1,0 +1,31 @@
+{
+    "schemaVersion": 1,
+    "id": "archaic",
+    "name": "Archaic",
+    "version": "$version",
+    "environment": "*",
+    "icon": "assets/archaic/icon.png",
+    "depends": {
+        "fabric": "*"
+    },
+    "custom": {
+    },
+    "entrypoints": {
+        "main": [
+            "io.github.alloffabric.archaic.Archaic"
+        ],
+        "client": [
+
+        ]
+    },
+    "authors": [
+        {
+            "name": "UpcraftLP",
+            "contact": {
+                "homepage": "https://twitter.com/UpcraftLP",
+                "twitter": "https://twitter.com/UpcraftLP"
+            }
+        }
+    ],
+    "description": ""
+}

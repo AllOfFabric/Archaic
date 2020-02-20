@@ -1,0 +1,8 @@
+{
+    "replace": false,
+    "values": [
+        "archaic:geode",
+        "archaic:nether_geode",
+        "archaic:end_geode"
+    ]
+}
